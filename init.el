@@ -7,7 +7,7 @@
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(geiser-guile projectile super-save pdf-tools dirvish zenburn-theme dashboard geiser-mit ob-async macrostep-geiser orderless vertico marginalia geiser company which-key))
+   '(olivetti geiser-guile projectile super-save pdf-tools dirvish zenburn-theme dashboard geiser-mit ob-async macrostep-geiser orderless vertico marginalia geiser company which-key))
  '(package-vc-selected-packages
    '((org-yt :vc-backend Git :url "https://github.com/TobiasZawada/org-yt"))))
 (custom-set-faces

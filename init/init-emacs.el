@@ -4,7 +4,6 @@
   (load-file "~/.config/emacs/init.el"))
 
 (define-key global-map (kbd "C-z") (make-sparse-keymap))
-(global-set-key (kbd "C-z z") 're-init)
 (global-set-key (kbd "C-z i") 'package-install)
 
 ;; supersave
@@ -146,5 +145,7 @@
 ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 ;; Recommended keymap prefix on Windows/Linux
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+(global-set-key (kbd "C-z c") 'olivetti-mode)
 
 (provide 'init-emacs)
