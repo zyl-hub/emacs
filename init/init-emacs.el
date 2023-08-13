@@ -148,4 +148,13 @@
 
 (global-set-key (kbd "C-z c") 'olivetti-mode)
 
+;; flycheck
+(global-flycheck-mode)
+
+;; autopair
+(require 'smartparens-config)
+;; Always start smartparens mode in js-mode.
+;; (add-hook 'scheme-mode #'smartparens-mode)
+
+(smartparens-global-mode t)
 (provide 'init-emacs)

@@ -8,4 +8,6 @@
 
 (setq geiser-active-implementations '(guile))
 
+(require 'flycheck-guile)
+
 (provide 'init-scheme)
