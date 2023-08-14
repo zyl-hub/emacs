@@ -7,9 +7,15 @@
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(smartparens htmlize org-yt flycheck-guile flycheck olivetti geiser-guile projectile super-save pdf-tools dirvish zenburn-theme dashboard geiser-mit ob-async macrostep-geiser orderless vertico marginalia geiser company which-key))
+   '(rust-mode flycheck-rust f yasnippet markdown-mode smartparens
+	       htmlize org-yt flycheck-guile flycheck olivetti
+	       geiser-guile projectile super-save pdf-tools dirvish
+	       zenburn-theme dashboard geiser-mit ob-async
+	       macrostep-geiser orderless vertico marginalia geiser
+	       company which-key))
  '(package-vc-selected-packages
-   '((org-yt :vc-backend Git :url "https://github.com/TobiasZawada/org-yt"))))
+   '((org-yt :vc-backend Git :url
+	     "https://github.com/TobiasZawada/org-yt"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -40,3 +46,4 @@
 (require 'init-scheme)
 (require 'init-docs)
 (require 'init-org)
+(require 'init-lspce)

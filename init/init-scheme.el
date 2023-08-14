@@ -8,6 +8,8 @@
 
 (setq geiser-active-implementations '(guile))
 
-(require 'flycheck-guile)
+(require 'flycheck-guile-autoloads)
+
+(eval-after-load 'scheme-mode '(require 'smartparens-scheme))
 
 (provide 'init-scheme)

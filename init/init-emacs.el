@@ -157,4 +157,5 @@
 ;; (add-hook 'scheme-mode #'smartparens-mode)
 
 (smartparens-global-mode t)
+
 (provide 'init-emacs)
