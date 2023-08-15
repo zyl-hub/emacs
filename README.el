@@ -1,7 +1,3 @@
-* personal config file
-** emacs config
-*** normal config
-#+begin_src elisp
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
@@ -31,44 +27,29 @@
 ;; remove ~ files
 ;; (setq make-backup-files nil)
 (setq backup-directory-alist '((".*" . "/tmp/emacs")))
-#+end_src
 
-*** super save
-#+begin_src elisp
 (use-package super-save
   :ensure t
   :config
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t)
   (setq auto-save-default nil))
-#+end_src
 
-*** theme
-#+begin_src elisp
 (use-package zenburn-theme
   :ensure t
   :config
   (load-theme 'zenburn t))
-#+end_src
 
-*** which key
-#+begin_src elisp
 (use-package which-key
   :ensure t
   :config
   (which-key-mode))
-#+end_src
 
-*** dirvish
-#+begin_src elisp
 (use-package dirvish
   :ensure t
   :config
   (dirvish-override-dired-mode))
-#+end_src
 
-*** rich annotations in M-x menu
-#+begin_src elisp
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
   ;; available in the *Completions* buffer, add it to the
@@ -84,10 +65,7 @@
   ;; the mode gets enabled right away. Note that this forces loading the
   ;; package.
   (marginalia-mode))
-#+end_src
 
-*** keymap annotations in M-x menu
-#+begin_src elisp
 ;; Enable vertico
 (use-package vertico
   :ensure t
@@ -159,9 +137,7 @@
               ("M-DEL" . vertico-directory-delete-word))
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
-#+end_src
-*** dashboard
-#+begin_src elisp
+
 ;; show dashboard on startup
 (use-package dashboard
   :ensure t
@@ -175,24 +151,18 @@
                         (projects . 5)
                         (agenda . 5)
                         (registers . 5)))
-#+end_src
-*** projectile
-#+begin_src elisp
+
 (use-package projectile
   :ensure t
   :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-#+end_src
-*** center mode
-#+begin_src elisp
+
 (use-package olivetti
   :ensure t
   :config
   (global-set-key (kbd "C-z c") 'olivetti-mode))
-#+end_src
-*** meow modal edit
-#+begin_src elisp
+
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
@@ -282,40 +252,26 @@
 (require 'meow)
 (meow-setup)
 (meow-global-mode 1)
-#+end_src
-** language support
-*** company mode
-#+begin_src elisp
+
 (use-package company
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-dabbrev-downcase 0)
   (setq company-idle-delay 0))
-#+end_src
 
-*** lspce
-#+begin_src elisp
-#+end_src
-*** flycheck
-#+begin_src elisp
+
+
 (use-package flycheck
   :ensure t
   :config
   (global-flycheck-mode))
 
-#+end_src
-
-*** auto pair
-#+begin_src elisp
 (use-package smartparens
   :ensure t)
 (require 'smartparens-config)
 (smartparens-global-mode t)
-#+end_src
 
-*** org
-#+begin_src elisp
 (use-package htmlize
   :ensure t)
 
@@ -338,19 +294,13 @@
       org-src-tab-acts-natively t)
 
 (eat/pkg org-yt "https://github.com/TobiasZawada/org-yt")
-#+end_src
-*** yasnippet
-#+begin_src elisp
+
 (use-package yasnippet
   :ensure t)
-#+end_src
-*** markdown
-#+begin_src elisp
+
 (use-package markdown-mode
   :ensure t)
-#+end_src
-*** scheme
-#+begin_src elisp
+
 (use-package geiser
   :ensure t)
 
@@ -375,27 +325,17 @@
 (require 'flycheck-guile-autoloads)
 
 (eval-after-load 'scheme-mode '(require 'smartparens-scheme))
-#+end_src
 
-*** rust
-#+begin_src elisp
 (use-package rust-mode
   :ensure t)
 
 (use-package flycheck-rust
   :ensure t)
-#+end_src
-** useful tools
-*** pdf tools
-#+begin_src elisp
+
 (use-package pdf-tools
   :ensure t
   :config
   (pdf-tools-install))
-#+end_src
 
-*** f
-#+begin_src elisp
 (use-package f
   :ensure t)
-#+end_src
