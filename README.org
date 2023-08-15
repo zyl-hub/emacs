@@ -1,4 +1,30 @@
-* personal config file
+* personal config file                                                  :TOC_3_gh:
+  - [[#emacs-config][emacs config]]
+    - [[#normal-config][normal config]]
+    - [[#super-save][super save]]
+    - [[#theme][theme]]
+    - [[#which-key][which key]]
+    - [[#dirvish][dirvish]]
+    - [[#rich-annotations-in-m-x-menu][rich annotations in M-x menu]]
+    - [[#keymap-annotations-in-m-x-menu][keymap annotations in M-x menu]]
+    - [[#dashboard][dashboard]]
+    - [[#projectile][projectile]]
+    - [[#center-mode][center mode]]
+    - [[#meow-modal-edit][meow modal edit]]
+  - [[#language-support][language support]]
+    - [[#company-mode][company mode]]
+    - [[#lspce][lspce]]
+    - [[#flycheck][flycheck]]
+    - [[#auto-pair][auto pair]]
+    - [[#org][org]]
+    - [[#yasnippet][yasnippet]]
+    - [[#markdown][markdown]]
+    - [[#scheme][scheme]]
+    - [[#rust][rust]]
+  - [[#useful-tools][useful tools]]
+    - [[#pdf-tools][pdf tools]]
+    - [[#f][f]]
+
 ** emacs config
 *** normal config
 #+begin_src elisp
@@ -316,11 +342,38 @@
 
 *** org
 #+begin_src elisp
+(setq org-src-fontify-natively t
+      org-src-window-setup 'current-window ;; edit in current window
+      org-src-strip-leading-and-trailing-blank-lines t
+      org-src-preserve-indentation t ;; do not put two spaces on the left
+      org-src-tab-acts-natively t)
+
 (use-package htmlize
   :ensure t)
 
 (use-package ob-async
   :ensure t)
+
+(use-package toc-org
+  :ensure t)
+
+(if (require 'toc-org nil t)
+    (progn
+      (add-hook 'org-mode-hook 'toc-org-mode)
+
+      ;; enable in markdown, too
+      (add-hook 'markdown-mode-hook 'toc-org-mode))
+      ;; (define-key markdown-mode-map (kbd "\C-c\C-o") 'toc-org-markdown-follow-thing-at-point))
+  (warn "toc-org not found"))
+    
+;; (if (require 'toc-org nil t)
+;;    (progn
+;;      (add-hook 'org-mode-hook 'toc-org-mode)
+
+      ;; enable in markdown, too
+      ;; (add-hook 'markdown-mode-hook 'toc-org-mode)
+      ;; (define-key markdown-mode-map (kbd "\C-c\C-o") 'toc-org-markdown-follow-thing-at-point))
+;;  (warn "toc-org not found"))
 
 ;; active Babel languages
 (org-babel-do-load-languages
@@ -331,14 +384,12 @@
 (setq org-confirm-babel-evaluate nil)
 
 ;; src block indentation / editing / syntax highlighting
-(setq org-src-fontify-natively t
-      org-src-window-setup 'current-window ;; edit in current window
-      org-src-strip-leading-and-trailing-blank-lines t
-      org-src-preserve-indentation t ;; do not put two spaces on the left
-      org-src-tab-acts-natively t)
 
 (eat/pkg org-yt "https://github.com/TobiasZawada/org-yt")
 #+end_src
+
+#+RESULTS:
+
 *** yasnippet
 #+begin_src elisp
 (use-package yasnippet
