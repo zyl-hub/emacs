@@ -14,7 +14,6 @@
     - [[#meow-modal-edit][meow modal edit]]
   - [[#language-support][language support]]
     - [[#company-mode][company mode]]
-    - [[#lspce][lspce]]
     - [[#flycheck][flycheck]]
     - [[#auto-pair][auto pair]]
     - [[#org][org]]
@@ -36,6 +35,10 @@
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
+;; always ensure
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+(setq use-package-always-defer t)
 ;; font config
 (add-to-list 'default-frame-alist '(font . "Source Code Pro Light-16"))
 
@@ -77,8 +80,7 @@
 *** super save
 #+begin_src elisp
 (use-package super-save
-  :ensure t
-  :config
+  :init
   (super-save-mode +1)
   (setq super-save-auto-save-when-idle t)
   (setq auto-save-default nil))
@@ -86,33 +88,29 @@
 
 *** theme
 #+begin_src elisp
-(use-package zenburn-theme
-  :ensure t
-  ;; :config
-  ; (load-theme 'zenburn t)
-  )
+;; (use-package zenburn-theme
+;;   :config
+;;   (load-theme 'zenburn t)
+;;   )
 (use-package solarized-theme
-  :ensure t
-  :config
+  :init
   (load-theme 'solarized-light t))
 #+end_src
 
 *** which key
 #+begin_src elisp
 (use-package which-key
-  :ensure t
-  :config
+  :init
   (which-key-mode))
 #+end_src
 
 *** dirvish
 #+begin_src elisp
 (use-package dirvish
-  :ensure t
-  :config
-  (dirvish-override-dired-mode))
-(global-set-key (kbd "C-z d") 'dirvish-dwim)
-
+  :init
+  (dirvish-override-dired-mode)
+  :bind ("C-z d" . 'dirvish-dwim))
+  ;;(global-set-key (kbd "C-z d") 'dirvish-dwim))
 #+end_src
 
 *** rich annotations in M-x menu
@@ -121,7 +119,6 @@
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
   ;; available in the *Completions* buffer, add it to the
   ;; `completion-list-mode-map'.
-  :ensure t
   :bind (:map minibuffer-local-map
          ("M-A" . marginalia-cycle))
 
@@ -138,7 +135,6 @@
 #+begin_src elisp
 ;; Enable vertico
 (use-package vertico
-  :ensure t
   :init
   (vertico-mode)
 
@@ -188,7 +184,6 @@
 ;; orderless in 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
-  :ensure t
   :init
   ;; Configure a custom style dispatcher (see the Consult wiki)
   ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
@@ -199,6 +194,7 @@
 
 ;; Configure vertico directory extension.
 (use-package vertico-directory
+  :ensure f
   :after vertico
   ;; More convenient directory navigation commands
   :bind (:map vertico-map
@@ -212,22 +208,20 @@
 #+begin_src elisp
 ;; show dashboard on startup
 (use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook))
-(setq dashboard-center-content t)
-;; show dashboard in emacs client
-(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
+  :init
+  (dashboard-setup-startup-hook)
+  (setq dashboard-center-content t)
+  ;; show dashboard in emacs client
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5)
+                          (agenda . 5)
+                          (registers . 5))))
 #+end_src
 *** projectile
 #+begin_src elisp
 (use-package projectile
-  :ensure t
   :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
@@ -235,13 +229,14 @@
 *** center mode
 #+begin_src elisp
 (use-package olivetti
-  :ensure t
-  :config
-  (global-set-key (kbd "C-z c") 'olivetti-mode))
+  :bind ("C-z c" . 'olivetti-mode))
 #+end_src
 *** meow modal edit
 #+begin_src elisp
-(defun meow-setup ()
+(use-package meow
+  :demand t
+  :config
+  (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
@@ -326,38 +321,32 @@
    '("z" . meow-pop-selection)
    '("'" . repeat)
    '("<escape>" . ignore)))
+  (meow-setup)
+  (meow-global-mode 1))
 
-(require 'meow)
-(meow-setup)
-(meow-global-mode 1)
 #+end_src
 ** language support
 *** company mode
 #+begin_src elisp
 (use-package company
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0))
+  :hook ((prog-mode . company-mode)
+	 (text-mode . company-mode))
+  :custom
+  (company-dabbrev-downcase 0)
+  (company-idle-delay 0 "respond faster"))
 #+end_src
 
-*** lspce
-#+begin_src elisp
-#+end_src
 *** flycheck
 #+begin_src elisp
 (use-package flycheck
-  :ensure t
-  :config
+  :init
   (global-flycheck-mode))
 
 #+end_src
 
 *** auto pair
 #+begin_src elisp
-(use-package smartparens
-  :ensure t)
+(use-package smartparens)
 (require 'smartparens-config)
 (smartparens-global-mode t)
 #+end_src
@@ -370,14 +359,13 @@
       org-src-preserve-indentation t ;; do not put two spaces on the left
       org-src-tab-acts-natively t)
 
-(use-package htmlize
-  :ensure t)
+(use-package htmlize)
 
 (use-package ob-async
-  :ensure t)
+  :mode ("\\.org\\'" . org-mode))
 
 (use-package toc-org
-  :ensure t)
+  :mode ("\\.org\\'" . org-mode))
 
 (if (require 'toc-org nil t)
     (progn
@@ -410,68 +398,59 @@
 (eat/pkg org-yt "https://github.com/TobiasZawada/org-yt")
 #+end_src
 
-#+RESULTS:
-
 *** yasnippet
 #+begin_src elisp
-(use-package yasnippet
-  :ensure t)
+(use-package yasnippet)
 #+end_src
 *** markdown
 #+begin_src elisp
-(use-package markdown-mode
-  :ensure t)
+(use-package markdown-mode)
 #+end_src
 *** scheme
 #+begin_src elisp
 (use-package geiser
-  :ensure t)
+  :mode ("\\.scm\\'" . scheme-mode)
+  :config
+  (setq geiser-active-implementations '(mit)))
 
-(use-package geiser-guile
-  :ensure t)
+;; (use-package geiser-guile)
 
 (use-package geiser-mit
-  :ensure t)
+  :mode ("\\.scm\\'" . scheme-mode))
 
 (use-package macrostep-geiser
-  :ensure t
   :after geiser-mode
-  :config (add-hook 'geiser-mode-hook #'macrostep-geiser-setup))
+  :hook (geiser-mode-hook #'macrostep-geiser-setup))
 
 (use-package macrostep-geiser
-  :ensure t
   :after geiser-repl
-  :config (add-hook 'geiser-repl-mode-hook #'macrostep-geiser-setup))
+  :hook (geiser-repl-mode-hook #'macrostep-geiser-setup))
 
-(setq geiser-active-implementations '(mit))
+;; (use-package flycheck-guile
+;;   :ensure t)
 
-(use-package flycheck-guile
-  :ensure t)
-
-(require 'flycheck-guile-autoloads)
+;; (require 'flycheck-guile)
 
 (eval-after-load 'scheme-mode '(require 'smartparens-scheme))
 #+end_src
 
 *** rust
 #+begin_src elisp
-(use-package rust-mode
-  :ensure t)
+(use-package rust-mode)
 
 (use-package flycheck-rust
-  :ensure t)
+  :mode ("\\.rs\\'" . rust-mode))
 #+end_src
 ** useful tools
 *** pdf tools
 #+begin_src elisp
 (use-package pdf-tools
-  :ensure t
+  :magic ("%PDF" . pdf-view-mode)
   :config
-  (pdf-tools-install))
+  (pdf-tools-install :no-query))
 #+end_src
 
 *** f
 #+begin_src elisp
-(use-package f
-  :ensure t)
+(use-package f)
 #+end_src
