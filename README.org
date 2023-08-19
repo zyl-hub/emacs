@@ -1,6 +1,7 @@
 * personal config file                                                  :TOC_3_gh:
   - [[#emacs-config][emacs config]]
     - [[#normal-config][normal config]]
+    - [[#useful-functions][useful functions]]
     - [[#super-save][super save]]
     - [[#theme][theme]]
     - [[#which-key][which key]]
@@ -35,6 +36,9 @@
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
+;; font config
+(add-to-list 'default-frame-alist '(font . "Source Code Pro Light-16"))
+
 ;; package vc macrostep
 (defmacro eat/pkg (package &optional vc)
   `(unless (package-installed-p ',package)
@@ -43,8 +47,9 @@
      (if ,vc (package-vc-install ,vc)
        (package-install ',package))))
 
-
-
+;; (set-frame-parameter nil 'bottom-divider-width 0)
+;; remove strike through line in modeline
+(setq x-underline-at-descent-line t)
 
 (define-key global-map (kbd "C-z") (make-sparse-keymap))
 (global-set-key (kbd "C-z i") 'package-install)
@@ -57,8 +62,18 @@
 ;; remove ~ files
 ;; (setq make-backup-files nil)
 (setq backup-directory-alist '((".*" . "/tmp/emacs")))
+
+;; save place
+(save-place-mode 1)
+
 #+end_src
 
+*** useful functions
+#+begin_src elisp
+(keymap-global-set "C-x C-a" '(lambda ()
+				(interative)
+				(eval-region (point-min) (point))))
+#+end_src
 *** super save
 #+begin_src elisp
 (use-package super-save
@@ -73,8 +88,13 @@
 #+begin_src elisp
 (use-package zenburn-theme
   :ensure t
+  ;; :config
+  ; (load-theme 'zenburn t)
+  )
+(use-package solarized-theme
+  :ensure t
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'solarized-light t))
 #+end_src
 
 *** which key
@@ -91,6 +111,8 @@
   :ensure t
   :config
   (dirvish-override-dired-mode))
+(global-set-key (kbd "C-z d") 'dirvish-dwim)
+
 #+end_src
 
 *** rich annotations in M-x menu
@@ -408,6 +430,9 @@
 (use-package geiser-guile
   :ensure t)
 
+(use-package geiser-mit
+  :ensure t)
+
 (use-package macrostep-geiser
   :ensure t
   :after geiser-mode
@@ -418,7 +443,7 @@
   :after geiser-repl
   :config (add-hook 'geiser-repl-mode-hook #'macrostep-geiser-setup))
 
-(setq geiser-active-implementations '(guile))
+(setq geiser-active-implementations '(mit))
 
 (use-package flycheck-guile
   :ensure t)

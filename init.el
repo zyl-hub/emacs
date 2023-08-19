@@ -10,15 +10,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("524fa911b70d6b94d71585c9f0c5966fe85fb3a9ddd635362bfabd1a7981a307"
+     "f366d4bc6d14dcac2963d45df51956b2409a15b770ec2f6d730e73ce0ca5c8a7"
+     default))
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(company-mode vertico-directory drivish zenburn-theme yasnippet
-		  which-key vertico super-save smartparens rust-mode
-		  projectile pdf-tools org-yt orderless olivetti
-		  ob-async meow markdown-mode marginalia
-		  macrostep-geiser htmlize geiser-mit geiser-guile
-		  flycheck-rust flycheck-guile f dirvish dashboard
-		  company)))
+   '(solarized-theme company-mode vertico-directory drivish zenburn-theme
+		     yasnippet which-key vertico super-save
+		     smartparens rust-mode projectile pdf-tools org-yt
+		     orderless olivetti ob-async meow markdown-mode
+		     marginalia macrostep-geiser htmlize geiser-mit
+		     geiser-guile flycheck-rust flycheck-guile f
+		     dirvish dashboard company)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
