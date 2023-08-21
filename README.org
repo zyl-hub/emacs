@@ -24,6 +24,7 @@
   - [[#useful-tools][useful tools]]
     - [[#pdf-tools][pdf tools]]
     - [[#f][f]]
+    - [[#telega][telega]]
 
 ** emacs config
 *** normal config
@@ -50,6 +51,17 @@
        (package-refresh-contents))
      (if ,vc (package-vc-install ,vc)
        (package-install ',package))))
+
+(progn
+      (set-language-environment "utf-8")
+      (setq-default default-input-method nil)
+      (when (memq system-type '(cygwin windows-nt ms-dos))
+        (prefer-coding-system 'gbk)
+        (prefer-coding-system 'utf-8)
+        (setq default-process-coding-system '(gbk . gbk)))
+      (setq system-time-locale "C")
+      (unless (memq system-type '(cygwin windows-nt ms-dos))
+        (set-selection-coding-system 'utf-8)))
 
 ;; (set-frame-parameter nil 'bottom-divider-width 0)
 ;; remove strike through line in modeline
@@ -454,4 +466,14 @@
 *** f
 #+begin_src elisp
 (use-package f)
+#+end_src
+
+*** telega
+#+begin_src elisp
+(use-package telega
+  :init
+  (setq telega-server-libs-prefix "/usr")
+  :commands (telega)
+  :config
+  (define-key global-map (kbd "C-c t") telega-prefix-map))
 #+end_src

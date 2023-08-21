@@ -16,13 +16,12 @@
      default))
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(solarized-theme company-mode vertico-directory drivish zenburn-theme
-		     yasnippet which-key vertico super-save
-		     smartparens rust-mode projectile pdf-tools org-yt
-		     orderless olivetti ob-async meow markdown-mode
-		     marginalia macrostep-geiser htmlize geiser-mit
-		     geiser-guile flycheck-rust flycheck-guile f
-		     dirvish dashboard company)))
+   '(telega solarized-theme company-mode vertico-directory drivish
+	    zenburn-theme yasnippet which-key vertico super-save
+	    smartparens rust-mode projectile pdf-tools org-yt
+	    orderless olivetti ob-async meow markdown-mode marginalia
+	    macrostep-geiser htmlize geiser-mit geiser-guile
+	    flycheck-rust flycheck-guile f dirvish dashboard company)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
