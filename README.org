@@ -1,3 +1,4 @@
+#+STARTUP: indent
 * personal config file                                                  :TOC_3_gh:
   - [[#emacs-config][emacs config]]
     - [[#normal-config][normal config]]
@@ -16,6 +17,8 @@
     - [[#company-mode][company mode]]
     - [[#flycheck][flycheck]]
     - [[#auto-pair][auto pair]]
+    - [[#auto-format][auto format]]
+    - [[#lispy][lispy]]
     - [[#org][org]]
     - [[#yasnippet][yasnippet]]
     - [[#markdown][markdown]]
@@ -25,6 +28,7 @@
     - [[#pdf-tools][pdf tools]]
     - [[#f][f]]
     - [[#telega][telega]]
+    - [[#emacs-rime][emacs rime]]
 
 ** emacs config
 *** normal config
@@ -41,8 +45,24 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 (setq use-package-always-defer t)
-;; font config
-(add-to-list 'default-frame-alist '(font . "Source Code Pro Light-16"))
+
+
+(defun en-set-font ()
+  ;; font config
+  (add-to-list 'default-frame-alist '(font . "Source Code Pro Light-16"))
+  ;; (set-face-attribute 'default t :font "Source Code Pro Light-16")
+  ;; (set-fontset-font t 'en (font-spec :family "Source Code Pro Light" :size 16))
+  ;; font测试字体高度
+  (set-fontset-font t 'han      (font-spec :family "LXGW WenKai Mono Light" :size 20))
+  (set-fontset-font t 'cjk-misc (font-spec :family "LXGW WenKai Mono Light" :size 20))  
+  ;; (set-fontset-font t 'han      (font-spec :family "WenQuanYi Micro Hei" :size 18))
+  ;; (set-fontset-font t 'cjk-misc (font-spec :family "WenQuanYi Micro Hei" :size 18))
+  (set-fontset-font t 'emoji (font-spec :family "Apple Color Emoji" :size 16))
+  )
+
+(en-set-font)
+(add-hook 'window-setup-hook #'en-set-font)
+(add-hook 'server-after-make-frame-hook #'en-set-font)
 
 ;; package vc macrostep
 (defmacro eat/pkg (package &optional vc)
@@ -364,6 +384,17 @@
 (smartparens-global-mode t)
 #+end_src
 
+*** auto format
+#+begin_src elisp
+(use-package format-all)
+#+end_src
+
+*** lispy
+#+begin_src elisp
+(use-package lispy
+  :hook (scheme-mode . lispy-mode))
+#+end_src
+
 *** org
 #+begin_src elisp
 (setq org-src-fontify-natively t
@@ -476,4 +507,11 @@
   :commands (telega)
   :config
   (define-key global-map (kbd "C-c t") telega-prefix-map))
+#+end_src
+
+*** emacs rime
+#+begin_src elisp
+(use-package rime
+  :custom
+  (default-input-method "rime"))
 #+end_src
