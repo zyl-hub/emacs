@@ -19,16 +19,16 @@
     - [[#auto-pair][auto pair]]
     - [[#auto-format][auto format]]
     - [[#lispy][lispy]]
-    - [[#org][org]]
     - [[#yasnippet][yasnippet]]
     - [[#markdown][markdown]]
     - [[#scheme][scheme]]
     - [[#rust][rust]]
+  - [[#note-taking][note taking]]
+    - [[#org][org]]
+    - [[#org-capture][org-capture]]
   - [[#useful-tools][useful tools]]
     - [[#pdf-tools][pdf tools]]
     - [[#f][f]]
-    - [[#telega][telega]]
-    - [[#emacs-rime][emacs rime]]
 
 ** emacs config
 *** normal config
@@ -53,10 +53,10 @@
   ;; (set-face-attribute 'default t :font "Source Code Pro Light-16")
   ;; (set-fontset-font t 'en (font-spec :family "Source Code Pro Light" :size 16))
   ;; font测试字体高度
-  (set-fontset-font t 'han      (font-spec :family "LXGW WenKai Mono Light" :size 20))
-  (set-fontset-font t 'cjk-misc (font-spec :family "LXGW WenKai Mono Light" :size 20))  
-  ;; (set-fontset-font t 'han      (font-spec :family "WenQuanYi Micro Hei" :size 18))
-  ;; (set-fontset-font t 'cjk-misc (font-spec :family "WenQuanYi Micro Hei" :size 18))
+  ;; (set-fontset-font t 'han      (font-spec :family "LXGW WenKai Mono Light" :size 20))
+  ;; (set-fontset-font t 'cjk-misc (font-spec :family "LXGW WenKai Mono Light" :size 20))  
+  (set-fontset-font t 'han      (font-spec :family "WenQuanYi Micro Hei" :size 18))
+  (set-fontset-font t 'cjk-misc (font-spec :family "WenQuanYi Micro Hei" :size 18))
   (set-fontset-font t 'emoji (font-spec :family "Apple Color Emoji" :size 16))
   )
 
@@ -395,6 +395,51 @@
   :hook (scheme-mode . lispy-mode))
 #+end_src
 
+*** yasnippet
+#+begin_src elisp
+(use-package yasnippet)
+#+end_src
+*** markdown
+#+begin_src elisp
+(use-package markdown-mode)
+#+end_src
+*** scheme
+#+begin_src elisp
+(use-package geiser
+  :mode ("\\.scm\\'" . scheme-mode)
+  :config
+  (setq geiser-active-implementations '(mit)))
+
+;; (use-package geiser-guile)
+
+(use-package geiser-mit
+  :mode ("\\.scm\\'" . scheme-mode))
+
+(use-package macrostep-geiser
+  :after geiser-mode
+  :hook (geiser-mode-hook #'macrostep-geiser-setup))
+
+(use-package macrostep-geiser
+  :after geiser-repl
+  :hook (geiser-repl-mode-hook #'macrostep-geiser-setup))
+
+;; (use-package flycheck-guile
+;;   :ensure t)
+
+;; (require 'flycheck-guile)
+
+(eval-after-load 'scheme-mode '(require 'smartparens-scheme))
+#+end_src
+
+*** rust
+#+begin_src elisp
+(use-package rust-mode)
+
+(use-package flycheck-rust
+  :mode ("\\.rs\\'" . rust-mode))
+#+end_src
+
+** note taking
 *** org
 #+begin_src elisp
 (setq org-src-fontify-natively t
@@ -440,51 +485,26 @@
 ;; src block indentation / editing / syntax highlighting
 
 (eat/pkg org-yt "https://github.com/TobiasZawada/org-yt")
+
+;; latex preview size
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 #+end_src
 
-*** yasnippet
+*** org-capture
 #+begin_src elisp
-(use-package yasnippet)
-#+end_src
-*** markdown
-#+begin_src elisp
-(use-package markdown-mode)
-#+end_src
-*** scheme
-#+begin_src elisp
-(use-package geiser
-  :mode ("\\.scm\\'" . scheme-mode)
-  :config
-  (setq geiser-active-implementations '(mit)))
-
-;; (use-package geiser-guile)
-
-(use-package geiser-mit
-  :mode ("\\.scm\\'" . scheme-mode))
-
-(use-package macrostep-geiser
-  :after geiser-mode
-  :hook (geiser-mode-hook #'macrostep-geiser-setup))
-
-(use-package macrostep-geiser
-  :after geiser-repl
-  :hook (geiser-repl-mode-hook #'macrostep-geiser-setup))
-
-;; (use-package flycheck-guile
-;;   :ensure t)
-
-;; (require 'flycheck-guile)
-
-(eval-after-load 'scheme-mode '(require 'smartparens-scheme))
+(setq org-default-notes-file (concat org-directory "/journal.org"))
+(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-capture-templates nil)
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+         "* TODO %?\n  %i\n  %a")
+        ("j" "Journal" entry (file+datetree "~/org/journal.org")
+         "* %?\nEntered on %U\n  %i\n  %a")))
+;; (add-to-list 'org-capture-templates
+;;             '("j" "Journal" entry (file "~/org/journal.org")
+;;                "* %U - %^{heading}\n  %?"))
 #+end_src
 
-*** rust
-#+begin_src elisp
-(use-package rust-mode)
-
-(use-package flycheck-rust
-  :mode ("\\.rs\\'" . rust-mode))
-#+end_src
 ** useful tools
 *** pdf tools
 #+begin_src elisp
@@ -499,19 +519,3 @@
 (use-package f)
 #+end_src
 
-*** telega
-#+begin_src elisp
-(use-package telega
-  :init
-  (setq telega-server-libs-prefix "/usr")
-  :commands (telega)
-  :config
-  (define-key global-map (kbd "C-c t") telega-prefix-map))
-#+end_src
-
-*** emacs rime
-#+begin_src elisp
-(use-package rime
-  :custom
-  (default-input-method "rime"))
-#+end_src
