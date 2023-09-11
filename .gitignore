@@ -12,3 +12,6 @@ history
 README.el
 /dirvish/
 rime
+org-persist
+server
+projectile.cache
