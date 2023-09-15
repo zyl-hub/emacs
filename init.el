@@ -18,10 +18,10 @@
  '(org-agenda-files '("~/org/gtd.org"))
  '(package-selected-packages
    '(geiser flycheck yasnippet which-key vertico toc-org super-save
-	    solarized-theme smartparens rust-mode projectile pdf-tools
-	    org-yt orderless olivetti ob-async meow markdown-mode
-	    marginalia macrostep-geiser lispy htmlize geiser-mit
-	    format-all flycheck-rust f dirvish dashboard company))
+	    solarized-theme smartparens rust-mode projectile org-yt
+	    orderless olivetti ob-async meow markdown-mode marginalia
+	    macrostep-geiser lispy htmlize geiser-mit format-all
+	    flycheck-rust f dirvish dashboard company))
  '(package-vc-selected-packages
    '((org-yt :vc-backend Git :url
 	     "https://github.com/TobiasZawada/org-yt"))))

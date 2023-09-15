@@ -553,10 +553,10 @@
 ** useful tools
 *** pdf tools
 #+begin_src elisp
-(use-package pdf-tools
-  :magic ("%PDF" . pdf-view-mode)
-  :config
-  (pdf-tools-install :no-query))
+;; (use-package pdf-tools
+;;   :magic ("%PDF" . pdf-view-mode)
+;;   :config
+;;   (pdf-tools-install :no-query))
 #+end_src
 
 *** f
