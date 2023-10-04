@@ -15,3 +15,5 @@ rime
 org-persist
 server
 projectile.cache
+emms
+racket-mode

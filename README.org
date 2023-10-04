@@ -9,8 +9,6 @@
     - [[#dirvish][dirvish]]
     - [[#rich-annotations-in-m-x-menu][rich annotations in M-x menu]]
     - [[#keymap-annotations-in-m-x-menu][keymap annotations in M-x menu]]
-    - [[#dashboard][dashboard]]
-    - [[#projectile][projectile]]
     - [[#center-mode][center mode]]
     - [[#meow-modal-edit][meow modal edit]]
     - [[#fast-move][fast-move]]
@@ -30,7 +28,6 @@
     - [[#org-capture][org-capture]]
     - [[#org-aganda][org-aganda]]
   - [[#useful-tools][useful tools]]
-    - [[#pdf-tools][pdf tools]]
     - [[#f][f]]
 
 ** emacs config
@@ -47,7 +44,8 @@
 ;; always ensure
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
-(setq use-package-always-defer t)
+;; (setq use-package-always-defer t)
+(setq use-package-inject-hooks t)
 
 (progn
   (set-locale-environment "en_US.UTF-8")
@@ -132,7 +130,7 @@
 (save-place-mode 1)
 
 ;; auto fill
-(auto-fill-mode 1)
+(setq-default auto-fill-function 'do-auto-fill)
 
 ;; scroll by one line kbd
 (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
@@ -155,14 +153,14 @@
 #+end_src
 
 *** theme
-#+begin_src elisp
+#+begin_src elisp :eval no
 (use-package doom-themes
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
   :init
-  (load-theme 'doom-solarized-light t)
+  (load-theme 'doom-ayu-light t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -281,7 +279,7 @@
   ;; Tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 #+end_src
-*** dashboard
+*** COMMENT dashboard
 #+begin_src elisp
 ;; show dashboard on startup
 (use-package dashboard
@@ -296,7 +294,7 @@
                           (agenda . 5)
                           (registers . 5))))
 #+end_src
-*** projectile
+*** COMMENT projectile
 #+begin_src elisp
 (use-package projectile
   :config
@@ -490,10 +488,13 @@
 
 *** rust
 #+begin_src elisp
-(use-package rust-mode)
+(use-package rust-mode
+  :hook ((rust-mode . (lambda () (setq indent-tabs-mode nil)))))
 
 (use-package flycheck-rust
   :mode ("\\.rs\\'" . rust-mode))
+
+(add-hook 'rust-mode-hook 'eglot-ensure)
 #+end_src
 
 ** note taking
@@ -567,12 +568,12 @@
 (global-set-key (kbd "C-c a") #'org-agenda)
 #+end_src
 ** useful tools
-*** pdf tools
+*** COMMENT pdf tools
 #+begin_src elisp
-;; (use-package pdf-tools
-;;   :magic ("%PDF" . pdf-view-mode)
-;;   :config
-;;   (pdf-tools-install :no-query))
+(use-package pdf-tools
+  :magic ("%PDF" . pdf-view-mode)
+  :config
+  (pdf-tools-install :no-query))
 #+end_src
 
 *** f
@@ -580,3 +581,15 @@
 (use-package f)
 #+end_src
 
+*** COMMENT Emms
+
+cannot use on windows
+
+#+begin_src elisp
+(use-package emms
+  :config
+  (require 'emms-setup)
+  (emms-all)
+  (setq emms-player-list '(emms-player-mpv)
+	emms-info-functions '(emms-info-native)))
+#+end_src
