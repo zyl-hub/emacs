@@ -17,3 +17,5 @@ server
 projectile.cache
 emms
 racket-mode
+package-quickstart.el
+package-quickstart.elc
