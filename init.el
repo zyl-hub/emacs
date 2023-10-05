@@ -15,7 +15,7 @@
  '(inhibit-startup-screen t)
  '(org-agenda-files '("~/org/gtd.org"))
  '(package-selected-packages
-   '(auto-dark emms doom-themes org-download racket-mode racket geiser flycheck yasnippet which-key vertico toc-org super-save smartparens rust-mode org-yt orderless olivetti ob-async meow markdown-mode marginalia macrostep-geiser lispy htmlize geiser-mit format-all flycheck-rust f dirvish company))
+   '(rainbow-delimiters auto-dark emms doom-themes org-download racket-mode racket geiser flycheck yasnippet which-key vertico toc-org super-save smartparens rust-mode org-yt orderless olivetti ob-async meow markdown-mode marginalia macrostep-geiser lispy htmlize geiser-mit format-all flycheck-rust f dirvish company))
  '(package-vc-selected-packages
    '((org-yt :vc-backend Git :url "https://github.com/TobiasZawada/org-yt"))))
 

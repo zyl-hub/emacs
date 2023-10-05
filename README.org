@@ -15,6 +15,7 @@
   - [[#language-support][language support]]
     - [[#company-mode][company mode]]
     - [[#flycheck][flycheck]]
+    - [[#rainbow-brackets][rainbow brackets]]
     - [[#auto-pair][auto pair]]
     - [[#auto-format][auto format]]
     - [[#lispy][lispy]]
@@ -179,7 +180,12 @@
   (setq auto-dark-dark-theme 'doom-ayu-dark)
   (setq auto-dark-light-theme 'doom-ayu-light)
   (auto-dark-mode t))
+
+(define-advice load-theme (:before (&rest args) disable-theme)
+  "Disable `custom-enabled-themes' before `load-theme'."
+  (mapcar #'disable-theme custom-enabled-themes))
 #+end_src
+
 *** which key
 #+begin_src elisp
 (use-package which-key
@@ -439,6 +445,13 @@
 (use-package smartparens)
 (require 'smartparens-config)
 (smartparens-global-mode t)
+#+end_src
+
+*** rainbow brackets
+#+begin_src elisp
+(use-package rainbow-delimiters
+  :hook ((prog-mode . rainbow-delimiters-mode)
+	 (org-mode . rainbow-delimiters-mode)))
 #+end_src
 
 *** auto pair
