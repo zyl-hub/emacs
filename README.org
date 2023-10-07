@@ -450,8 +450,7 @@
 *** rainbow brackets
 #+begin_src elisp
 (use-package rainbow-delimiters
-  :hook ((prog-mode . rainbow-delimiters-mode)
-	 (org-mode . rainbow-delimiters-mode)))
+  :hook ((prog-mode . rainbow-delimiters-mode)))
 #+end_src
 
 *** auto pair
@@ -510,6 +509,13 @@
 #+begin_src elisp
 (use-package racket-mode
   :hook ('racket-mode-hook . (lambda () (define-key racket-mode-map (kbd "<f5>") 'racket-run))))
+;; (eat/pkg ob-racket "https://github.com/hasu/emacs-ob-racket")
+(use-package ob-racket
+  :ensure nil
+  :after org
+  :config
+  (add-hook 'ob-racket-pre-runtime-library-load-hook
+	      #'ob-racket-raco-make-runtime-library))
 #+end_src
 
 *** rust
