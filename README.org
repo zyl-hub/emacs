@@ -22,7 +22,6 @@
     - [[#yasnippet][yasnippet]]
     - [[#markdown][markdown]]
     - [[#scheme][scheme]]
-    - [[#racket][racket]]
     - [[#rust][rust]]
   - [[#note-taking][note taking]]
     - [[#org][org]]
@@ -131,7 +130,8 @@
 (save-place-mode 1)
 
 ;; auto fill
-(setq-default auto-fill-function 'do-auto-fill)
+;; (setq-default auto-fill-function 'do-auto-fill)
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 ;; scroll by one line kbd
 (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
@@ -505,7 +505,7 @@
 (eval-after-load 'scheme-mode '(require 'smartparens-scheme))
 #+end_src
 
-*** racket
+*** COMMENT racket
 #+begin_src elisp
 (use-package racket-mode
   :hook ('racket-mode-hook . (lambda () (define-key racket-mode-map (kbd "<f5>") 'racket-run))))
