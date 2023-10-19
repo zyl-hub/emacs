@@ -30,6 +30,8 @@
     - [[#org-aganda][org-aganda]]
   - [[#useful-tools][useful tools]]
     - [[#f][f]]
+    - [[#typit][typit]]
+    - [[#magit][magit]]
 
 ** emacs config
 *** normal config
@@ -425,34 +427,35 @@
 *** prettify symbols
 #+begin_src elisp
 (setq-default prettify-symbols-alist '(("TODO" . "")
-	                          ("WAIT" . "")        
-   				  ("NOPE" . "")
-				  ("DONE" . "")
-				  ("[#A]" . "")
-				  ("[#B]" . "")
- 				  ("[#C]" . "")
-				  ("[ ]" . "")
-				  ("[X]" . "")
-				  ("[-]" . "")
-				  ("lambda" . 955)
-				  ("#+begin_src" . "→")
-				  ("#+end_src" . "←")
-				  (":PROPERTIES:" . "")
-				  (":END:" . "―")
-				  ("#+STARTUP:" . "")
-				  ("#+TITLE: " . "")
-				  ("#+RESULTS:" . "")
-				  ("#+NAME:" . "")
-				  ("#+ROAM_TAGS:" . "")
-				  ("#+FILETAGS:" . "")
-				  ("#+HTML_HEAD:" . "")
-				  ("#+SUBTITLE:" . "")
-				  ("#+AUTHOR:" . "")
-				  (":Effort:" . "")
-				  ("SCHEDULED:" . "")
-				  ("DEADLINE:" . "")))
+	                               ("WAIT" . "")        
+   				       ("NOPE" . "")
+				       ("DONE" . "")
+				       ("[#A]" . "")
+				       ("[#B]" . "")
+ 				       ("[#C]" . "")
+				       ("[ ]" . "")
+				       ("[X]" . "")
+				       ("[-]" . "")
+				       ("lambda" . 955)
+				       ("#+begin_src" . "→")
+				       ("#+end_src" . "←")
+				       (":PROPERTIES:" . "")
+				       (":END:" . "―")
+				       ("#+STARTUP:" . "")
+				       ("#+TITLE: " . "")
+				       ("#+RESULTS:" . "")
+				       ("#+NAME:" . "")
+				       ("#+ROAM_TAGS:" . "")
+				       ("#+FILETAGS:" . "")
+				       ("#+HTML_HEAD:" . "")
+				       ("#+SUBTITLE:" . "")
+				       ("#+AUTHOR:" . "")
+				       (":Effort:" . "")
+				       ("SCHEDULED:" . "")
+				       ("DEADLINE:" . "")))
 
 (add-hook 'org-mode-hook 'prettify-symbols-mode)
+(add-hook 'prog-mode-hook 'prettify-symbols-mode)
 #+end_src
 
 ** language support
@@ -658,4 +661,15 @@ cannot use on windows
   (emms-all)
   (setq emms-player-list '(emms-player-mpv)
 	emms-info-functions '(emms-info-native)))
+#+end_src
+
+*** typit
+#+begin_src elisp
+(use-package typit)
+#+end_src
+
+*** magit
+#+begin_src elisp
+(use-package magit)
+(setq magit-view-git-manual-method 'man)
 #+end_src
