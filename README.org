@@ -12,6 +12,7 @@
     - [[#center-mode][center mode]]
     - [[#meow-modal-edit][meow modal edit]]
     - [[#fast-move][fast-move]]
+    - [[#prettify-symbols][prettify symbols]]
   - [[#language-support][language support]]
     - [[#company-mode][company mode]]
     - [[#flycheck][flycheck]]
@@ -118,9 +119,9 @@
 (global-set-key (kbd "C-z i") 'package-install)
 
 ;; remove bars
-(menu-bar-mode -1)
+;; (menu-bar-mode -1)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; (scroll-bar-mode -1)
 
 ;; remove ~ files
 ;; (setq make-backup-files nil)
@@ -419,6 +420,39 @@
 #+begin_src elisp
 (use-package avy
   :bind ("C-:" . 'avy-goto-char))
+#+end_src
+
+*** prettify symbols
+#+begin_src elisp
+(setq-default prettify-symbols-alist '(("TODO" . "")
+	                          ("WAIT" . "")        
+   				  ("NOPE" . "")
+				  ("DONE" . "")
+				  ("[#A]" . "")
+				  ("[#B]" . "")
+ 				  ("[#C]" . "")
+				  ("[ ]" . "")
+				  ("[X]" . "")
+				  ("[-]" . "")
+				  ("lambda" . 955)
+				  ("#+begin_src" . "→")
+				  ("#+end_src" . "←")
+				  (":PROPERTIES:" . "")
+				  (":END:" . "―")
+				  ("#+STARTUP:" . "")
+				  ("#+TITLE: " . "")
+				  ("#+RESULTS:" . "")
+				  ("#+NAME:" . "")
+				  ("#+ROAM_TAGS:" . "")
+				  ("#+FILETAGS:" . "")
+				  ("#+HTML_HEAD:" . "")
+				  ("#+SUBTITLE:" . "")
+				  ("#+AUTHOR:" . "")
+				  (":Effort:" . "")
+				  ("SCHEDULED:" . "")
+				  ("DEADLINE:" . "")))
+
+(add-hook 'org-mode-hook 'prettify-symbols-mode)
 #+end_src
 
 ** language support
