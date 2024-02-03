@@ -33,6 +33,8 @@
     - [[#typit][typit]]
     - [[#magit][magit]]
     - [[#treemacs][treemacs]]
+    - [[#beancount][beancount]]
+    - [[#leetcode][leetcode]]
 
 ** emacs config
 *** normal config
@@ -44,6 +46,9 @@
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
+
+;; python path
+(setq python-shell-interpreter "~/pyvnev/emacs/bin/python")
 
 ;; always ensure
 (require 'use-package-ensure)
@@ -825,3 +830,30 @@ cannot use on windows
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
 #+end_src
+
+*** beancount
+#+begin_src elisp
+(use-package beancount
+  :load-path "site-lisp/beancount-mode"
+  :mode ("\\.beancount'" . beancount-mode)
+  :hook ((beancount-mode . (lambda () (setq-local electric-indent-chars nil)))
+	 (beancount-mode . outline-minor-mode))
+  :bind (:map beancount-mode-map
+	      ("C-c C-n" . outline-next-visible-heading)
+	      ("C-c C-p" . outline-previous-visible-heading)))
+(use-package flymake-bean-check
+  :load-path "site-lisp/beancount-mode"
+  :hook (beancount-mode . flymake-bean-check-enable))
+#+end_src
+
+*** leetcode
+#+begin_src elisp
+(use-package leetcode
+  :hook (leetcode-solution-mode . (lambda() (flycheck-mode -1)))
+  :config
+  (setq leetcode-prefer-language "cpp")
+  (setq leetcode-prefer-sql "mysql")
+  (setq leetcode-save-solution t)
+  (setq leetcode-directory "~/leetcode"))
+#+end_src
+

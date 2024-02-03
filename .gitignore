@@ -19,3 +19,5 @@ emms
 racket-mode
 package-quickstart.el
 package-quickstart.elc
+site-lisp
+.cache
