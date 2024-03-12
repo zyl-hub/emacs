@@ -4,7 +4,6 @@
     - [[#normal-config][normal config]]
     - [[#useful-functions][useful functions]]
     - [[#super-save][super save]]
-    - [[#theme][theme]]
     - [[#which-key][which key]]
     - [[#dirvish][dirvish]]
     - [[#rich-annotations-in-m-x-menu][rich annotations in M-x menu]]
@@ -159,7 +158,7 @@
   (setq auto-save-default nil))
 #+end_src
 
-*** theme
+*** COMMENT theme
 #+begin_src elisp :eval no
 (use-package doom-themes
   :config
