@@ -8,7 +8,6 @@
     - [[#dirvish][dirvish]]
     - [[#rich-annotations-in-m-x-menu][rich annotations in M-x menu]]
     - [[#keymap-annotations-in-m-x-menu][keymap annotations in M-x menu]]
-    - [[#center-mode][center mode]]
     - [[#fast-move][fast-move]]
     - [[#prettify-symbols][prettify symbols]]
   - [[#language-support][language support]]
@@ -319,7 +318,7 @@
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 #+end_src
-*** center mode
+*** COMMENT center mode
 #+begin_src elisp
 (use-package olivetti
   :bind ("C-z c" . 'olivetti-mode))
@@ -425,7 +424,7 @@
   :bind ("C-:" . 'avy-goto-char))
 #+end_src
 
-*** prettify symbols
+*** COMMENT prettify symbols
 #+begin_src elisp
 (setq-default prettify-symbols-alist '(("TODO" . "")
 	                               ("WAIT" . "")        
@@ -646,8 +645,6 @@
 ;; auto indent
 (setq org-startup-indented 1)
 #+end_src
-
-#+RESULTS:
 
 *** org-capture
 #+begin_src elisp
