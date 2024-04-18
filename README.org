@@ -9,7 +9,6 @@
     - [[#rich-annotations-in-m-x-menu][rich annotations in M-x menu]]
     - [[#keymap-annotations-in-m-x-menu][keymap annotations in M-x menu]]
     - [[#center-mode][center mode]]
-    - [[#meow-modal-edit][meow modal edit]]
     - [[#fast-move][fast-move]]
     - [[#prettify-symbols][prettify symbols]]
   - [[#language-support][language support]]
@@ -325,7 +324,7 @@
 (use-package olivetti
   :bind ("C-z c" . 'olivetti-mode))
 #+end_src
-*** meow modal edit
+*** COMMENT meow modal edit
 #+begin_src elisp
 (use-package meow
   :demand t
@@ -661,7 +660,9 @@
 	("r" "Things to read" entry (file+datetree "~/org/read.org")
          "* %?\nEntered on %U\n  %i\n")
         ("j" "Journal" entry (file+datetree "~/org/journal.org")
-         "* %?\nEntered on %U\n  %i\n  %a")))
+         "* %?\nEntered on %U\n  %i\n  %a")
+	("p" "Paper" entry (file+datetree "~/org/paper.org")
+	 "* %?\nEntered on %U\n %i\n %a")))
 ;; (add-to-list 'org-capture-templates
 ;;             '("j" "Journal" entry (file "~/org/journal.org")
 ;;                "* %U - %^{heading}\n  %?"))
