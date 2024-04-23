@@ -20,3 +20,9 @@ racket-mode
 package-quickstart.el
 package-quickstart.elc
 .cache
+straight/build
+straight/links
+straight/repos
+straight
+tree-sitter
+url/cache/10160/https/org/gnu

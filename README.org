@@ -1,18 +1,21 @@
 #+STARTUP: indent
+#+PROPERTY: header-args :tangle yes
 * personal config file                                                  :TOC_3_gh:
   - [[#emacs-config][emacs config]]
     - [[#normal-config][normal config]]
     - [[#useful-functions][useful functions]]
+    - [[#setup][setup]]
+    - [[#straight][straight]]
     - [[#super-save][super save]]
     - [[#which-key][which key]]
     - [[#dirvish][dirvish]]
     - [[#rich-annotations-in-m-x-menu][rich annotations in M-x menu]]
     - [[#keymap-annotations-in-m-x-menu][keymap annotations in M-x menu]]
     - [[#fast-move][fast-move]]
-    - [[#prettify-symbols][prettify symbols]]
   - [[#language-support][language support]]
     - [[#company-mode][company mode]]
     - [[#flycheck][flycheck]]
+    - [[#treesit-auto][treesit-auto]]
     - [[#rainbow-brackets][rainbow brackets]]
     - [[#auto-pair][auto pair]]
     - [[#auto-format][auto format]]
@@ -25,6 +28,7 @@
     - [[#org][org]]
     - [[#org-capture][org-capture]]
     - [[#org-aganda][org-aganda]]
+    - [[#typst][typst]]
   - [[#useful-tools][useful tools]]
     - [[#f][f]]
     - [[#typit][typit]]
@@ -36,109 +40,105 @@
 ** emacs config
 *** normal config
 #+begin_src elisp
-(setq lexical-binding t)
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-;; and `package-pinned-packages`. Most users will not need or want to do this.
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
+  (setq lexical-binding t)
+  (setq custom-file (locate-user-emacs-file "custom.el"))
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
 
-;; always ensure
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
-;; (setq use-package-always-defer t)
-(setq use-package-inject-hooks t)
+  (progn
+    (set-locale-environment "en_US.UTF-8")
+    (setq system-time-locale "C")  ;; 这个是为了在 org mode 中用英文显示日期，默认是中文
+    )
 
-(progn
-  (set-locale-environment "en_US.UTF-8")
-  (setq system-time-locale "C")  ;; 这个是为了在 org mode 中用英文显示日期，默认是中文
-  )
+  (defun font-installed-p (font-name)
+    "Check if font with FONT-NAME is available."
+    (find-font (font-spec :name font-name)))
 
-(defun font-installed-p (font-name)
-  "Check if font with FONT-NAME is available."
-  (find-font (font-spec :name font-name)))
+  (defun nasy-set-font ()
+   (cl-loop for font in '("Source Code Pro" "Cascadia Code" "SF Mono"
+                           "Fira Code" "Menlo" "Monaco" "Dejavu Sans Mono"
+                           "Lucida Console" "Consolas" "SAS Monospace")
+             when (font-installed-p font)
+             return (set-face-attribute
+                     'default nil
+                     :font (font-spec :family font
+                                      :weight 'normal
+                                      :slant 'normal
+                                      :size (cond ((eq system-type 'gnu/linux) 18.0)
+                                                  ((eq system-type 'windows-nt) 16.0)))))
+    (cl-loop for font in '("OpenSansEmoji" "Noto Color Emoji" "Segoe UI Emoji"
+                           "EmojiOne Color" "Apple Color Emoji" "Symbola" "Symbol")
+             when (font-installed-p font)
+             return (set-fontset-font t 'unicode
+                                      (font-spec :family font
+                                                 :size (cond ((eq system-type 'gnu/linux) 20.0)
+                                                             ((eq system-type 'windows-nt) 18.0)))
+                                      nil 'prepend))
+    (cl-loop for font in '("LXGWWenKai" "Microsoft Yahei UI" "思源黑体 CN" "思源宋体 CN" "微软雅黑 CN"
+                           "Source Han Sans CN" "Source Han Serif CN"
+                           "WenQuanYi Micro Hei" "文泉驿等宽微米黑"
+                           "Microsoft Yahei")
+             when (font-installed-p font)
+             return (set-fontset-font t '(#x4e00 . #x9fff)
+                                      (font-spec :name font
+                                                 :weight 'normal
+                                                 :slant 'normal
+                                                 :size (cond ((eq system-type 'gnu/linux) 20.0)
+                                                             ((eq system-type 'windows-nt) 18.0)))))
+    (cl-loop for font in '("HanaMinB" "SimSun-ExtB")
+             when (font-installed-p font)
+             return (set-fontset-font t '(#x20000 . #x2A6DF)
+                                      (font-spec :name font
+                                                 :weight 'normal
+                                                 :slant 'normal
+                                                 :size (cond ((eq system-type 'gnu/linux) 20.0)
+                                                             ((eq system-type 'windows-nt) 18.0))))))
+  (when (display-graphic-p)
+    (nasy-set-font))
 
-(defun nasy-set-font ()
- (cl-loop for font in '("Source Code Pro" "Cascadia Code" "SF Mono"
-                         "Fira Code" "Menlo" "Monaco" "Dejavu Sans Mono"
-                         "Lucida Console" "Consolas" "SAS Monospace")
-           when (font-installed-p font)
-           return (set-face-attribute
-                   'default nil
-                   :font (font-spec :family font
-                                    :weight 'normal
-                                    :slant 'normal
-                                    :size (cond ((eq system-type 'gnu/linux) 18.0)
-                                                ((eq system-type 'windows-nt) 16.0)))))
-  (cl-loop for font in '("OpenSansEmoji" "Noto Color Emoji" "Segoe UI Emoji"
-                         "EmojiOne Color" "Apple Color Emoji" "Symbola" "Symbol")
-           when (font-installed-p font)
-           return (set-fontset-font t 'unicode
-                                    (font-spec :family font
-                                               :size (cond ((eq system-type 'gnu/linux) 20.0)
-                                                           ((eq system-type 'windows-nt) 18.0)))
-                                    nil 'prepend))
-  (cl-loop for font in '("LXGWWenKai" "Microsoft Yahei UI" "思源黑体 CN" "思源宋体 CN" "微软雅黑 CN"
-                         "Source Han Sans CN" "Source Han Serif CN"
-                         "WenQuanYi Micro Hei" "文泉驿等宽微米黑"
-                         "Microsoft Yahei")
-           when (font-installed-p font)
-           return (set-fontset-font t '(#x4e00 . #x9fff)
-                                    (font-spec :name font
-                                               :weight 'normal
-                                               :slant 'normal
-                                               :size (cond ((eq system-type 'gnu/linux) 20.0)
-                                                           ((eq system-type 'windows-nt) 18.0)))))
-  (cl-loop for font in '("HanaMinB" "SimSun-ExtB")
-           when (font-installed-p font)
-           return (set-fontset-font t '(#x20000 . #x2A6DF)
-                                    (font-spec :name font
-                                               :weight 'normal
-                                               :slant 'normal
-                                               :size (cond ((eq system-type 'gnu/linux) 20.0)
-                                                           ((eq system-type 'windows-nt) 18.0))))))
-(when (display-graphic-p)
-  (nasy-set-font))
-  
-(add-hook 'window-setup-hook #'nasy-set-font)
-(add-hook 'server-after-make-frame-hook #'nasy-set-font)
-
-;; package vc macrostep
-(defmacro eat/pkg (package &optional vc)
-  `(unless (package-installed-p ',package)
-     (unless (memq ',package package-archive-contents)
-       (package-refresh-contents))
-     (if ,vc (package-vc-install ,vc)
-       (package-install ',package))))
+  (add-hook 'window-setup-hook #'nasy-set-font)
+  (add-hook 'server-after-make-frame-hook #'nasy-set-font)
 
 
-;; (set-frame-parameter nil 'bottom-divider-width 0)
-;; remove strike through line in modeline
-(setq x-underline-at-descent-line t)
+  ;; (set-frame-parameter nil 'bottom-divider-width 0)
+  ;; remove strike through line in modeline
+  (setq x-underline-at-descent-line t)
 
-(define-key global-map (kbd "C-z") (make-sparse-keymap))
-(global-set-key (kbd "C-z i") 'package-install)
+  (define-key global-map (kbd "C-z") (make-sparse-keymap))
+  (global-set-key (kbd "C-z i") 'package-install)
 
-;; remove bars
-;; (menu-bar-mode -1)
-(tool-bar-mode -1)
-;; (scroll-bar-mode -1)
+  ;; remove bars
+  ;; (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  ;; (scroll-bar-mode -1)
 
-;; remove ~ files
-;; (setq make-backup-files nil)
-(setq backup-directory-alist '((".*" . "/tmp/emacs")))
+  ;; remove ~ files
+  ;; (setq make-backup-files nil)
+  (setq backup-directory-alist '((".*" . "/tmp/emacs")))
 
-;; save place
-(save-place-mode 1)
+  ;; save place
+  (save-place-mode 1)
 
-;; auto fill
-;; (setq-default auto-fill-function 'do-auto-fill)
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
+  ;; auto fill
+  ;; (setq-default auto-fill-function 'do-auto-fill)
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
-;; scroll by one line kbd
-(global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
-(global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
+  ;; scroll by one line kbd
+  (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
+  (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 #+end_src
 
 *** useful functions
@@ -146,6 +146,18 @@
 (keymap-global-set "C-x C-a" '(lambda ()
 				(interative)
 				(eval-region (point-min) (point))))
+#+end_src
+
+*** setup
+#+begin_src elisp
+(straight-use-package 'setup)
+#+end_src
+*** straight
+#+begin_src elisp
+;; Configure use-package to use straight.el by default
+(use-package straight
+  :custom
+  (straight-use-package-by-default t))
 #+end_src
 *** super save
 #+begin_src elisp
@@ -286,7 +298,7 @@
 
 ;; Configure vertico directory extension.
 (use-package vertico-directory
-  :ensure f
+  :straight f
   :after vertico
   ;; More convenient directory navigation commands
   :bind (:map vertico-map
@@ -474,6 +486,16 @@
 
 #+end_src
 
+*** treesit-auto
+#+begin_src elisp
+(setq treesit-font-lock-level 4)
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+#+end_src
 *** COMMENT smartparens
 #+begin_src elisp
 (use-package smartparens)
@@ -637,8 +659,6 @@
 
 ;; src block indentation / editing / syntax highlighting
 
-(eat/pkg org-yt "https://github.com/TobiasZawada/org-yt")
-
 ;; latex preview size
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
@@ -668,6 +688,22 @@
 *** org-aganda
 #+begin_src elisp
 (global-set-key (kbd "C-c a") #'org-agenda)
+#+end_src
+
+*** typst
+#+begin_src elisp
+;; (add-to-list 'treesit-language-source-alist
+;;              '(typst "https://github.com/uben0/tree-sitter-typst"))
+;; (treesit-install-language-grammar 'typst)
+(use-package typst-ts-mode
+  :straight (:type git :host sourcehut :repo "meow_king/typst-ts-mode" :files (:defaults "*.el"))
+  :custom
+  ;; don't add "--open" if you'd like `watch` to be an error detector
+  (typst-ts-mode-watch-options "--open")
+  
+  ;; experimental settings (I'm the main dev, so I enable these)
+  (typst-ts-mode-enable-raw-blocks-highlight t)
+  (typst-ts-mode-highlight-raw-blocks-at-startup t))
 #+end_src
 ** useful tools
 *** COMMENT pdf tools
@@ -710,7 +746,7 @@ cannot use on windows
 *** treemacs
 #+begin_src elisp
 (use-package treemacs
-  :ensure t
+  :straight t
   :defer t
   :init
   (with-eval-after-load 'winum
@@ -828,6 +864,7 @@ cannot use on windows
 *** beancount
 #+begin_src elisp
 (use-package beancount
+  :straight f
   :load-path "site-lisp/beancount-mode"
   :mode ("\\.beancount\\'" . beancount-mode)
   :hook ((beancount-mode . (lambda () (setq-local electric-indent-chars nil)))
@@ -836,6 +873,7 @@ cannot use on windows
 	      ("C-c C-n" . outline-next-visible-heading)
 	      ("C-c C-p" . outline-previous-visible-heading)))
 (use-package flymake-bean-check
+  :straight f
   :load-path "site-lisp/beancount-mode"
   :hook (beancount-mode . flymake-bean-check-enable))
 #+end_src
